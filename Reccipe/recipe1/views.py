@@ -8,9 +8,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
-def index(request):
-    return render(request, template_name='index.html')
 @login_required(login_url='/login/')
 def recipes(request):
     if request.method == "POST":
@@ -66,7 +63,8 @@ def update_recipe(request,id):
     return render(request, "update_recipe.html", context)
 
 
-
+def index(request):
+    return render(request, template_name='index.html')
 
 
 def login_page(request):
@@ -98,7 +96,15 @@ def logout_page(request):
     logout(request)
     return redirect('/login/')
 
+import re
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 
+from django.contrib import messages
+from django.shortcuts import render, redirect
+import re
+from django.contrib.auth.models import User
 
 def register_page(request):
     if request.method == 'POST':
@@ -110,25 +116,25 @@ def register_page(request):
         # Password validation
         if len(password) < 6:
             messages.info(request, "Password must be at least 6 characters long.")
-            return redirect('/register/')
+            return render(request, 'register.html', {'first_name': first_name, 'last_name': last_name, 'username': username})
         if not re.search(r'\d', password):
             messages.info(request, "Password must contain at least one number.")
-            return redirect('/register/')
+            return render(request, 'register.html', {'first_name': first_name, 'last_name': last_name, 'username': username})
         if not re.search(r'[A-Z]', password):
             messages.info(request, "Password must contain at least one uppercase letter.")
-            return redirect('/register/')
+            return render(request, 'register.html', {'first_name': first_name, 'last_name': last_name, 'username': username})
         if not re.search(r'[a-z]', password):
             messages.info(request, "Password must contain at least one lowercase letter.")
-            return redirect('/register/')
+            return render(request, 'register.html', {'first_name': first_name, 'last_name': last_name, 'username': username})
         if not re.search(r'[@$!%*?&]', password):
             messages.info(request, "Password must contain at least one special character.")
-            return redirect('/register/')
+            return render(request, 'register.html', {'first_name': first_name, 'last_name': last_name, 'username': username})
 
         # Check if the username already exists
         user = User.objects.filter(username=username)
         if user.exists():
             messages.info(request, 'Username already exists')
-            return redirect('/register/')
+            return render(request, 'register.html', {'first_name': first_name, 'last_name': last_name, 'username': username})
 
         # Create the user
         user = User.objects.create(
@@ -139,6 +145,9 @@ def register_page(request):
 
         user.set_password(password)  # Encrypt the password
         user.save()
+
+        # Add success message
+        messages.success(request, 'Registered successfully!')
 
         return redirect('/register/')
 
