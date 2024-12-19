@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/recipes.css' %}">
+</head>
+<body>
+
+<nav class="navbar bg-body-tertiary bg-danger  shadow-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand">Navbar</a>
+    <form class="d-flex">
+      {% if request.user.is_authenticated %}
+
+      <a href="/logout/" class="btn btn-success" type="submit">logout</a>
+      {% else %}
+      <a href="/login/" class="btn btn-success" type="submit">login</a>
+      {% endif %}
+
+    </form>
+  </div>
+</nav>
+
+
+
+<form class="sahdow-lg" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <h2> Update recipes</h2>
+  <hr>
+  <div class="mb-3">
+    <label class="form-label">Recipe name</label>
+    <input name="recipe_name" value="{{recipe.recipe_name}}" type="text"  required class="form-control">
+  </div>
+  <div class="mb-3">
+    <label   class="form-label">Recipe Discription</label>
+    <textarea name="recipe_description" value="" class="form-control" required>{{recipe.recipe_description}}</textarea>
+  </div>
+    <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Recipe Image</label>
+      <input name="recipe_image" type="file"  class="form-control">
+
+  </div>
+
+
+
+
+
+  <button type="submit" class="btn btn-success">update_Recipe</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/recipes.css' %}">
+</head>
+<body>
+
+<nav class="navbar bg-body-tertiary bg-danger  shadow-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand">Navbar</a>
+    <form class="d-flex">
+      {% if request.user.is_authenticated %}
+
+      <a href="/logout/" class="btn btn-success" type="submit">logout</a>
+      {% else %}
+      <a href="/login/" class="btn btn-success" type="submit">login</a>
+      {% endif %}
+
+    </form>
+  </div>
+</nav>
+
+
+<form class="sahdow-lg" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <h2> Add recipes</h2>
+  <hr>
+  <div class="mb-3">
+    <label class="form-label">Recipe name</label>
+    <input name="recipe_name"  type="text"  required class="form-control">
+
+  <div class="mb-3">
+    <label   class="form-label">Recipe Discription</label>
+    <textarea name="recipe_description"  class="form-control" required> </textarea>
+  </div>
+    <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Recipe Image</label>
+      <input name="recipe_image" type="file"  class="form-control">
+
+  </div>
+
+
+
+
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  </div>
+  <button type="submit" class="btn btn-success">Submit Recipe</button>
+</form>
+
+<div>
+    <div class="mt-5">
+      <div class="mx-auto col-6">
+    <label class="form-label">Recipe name</label>
+    <input name="recipe_name" value="{{recipe.recipe_name}}" type="text"  required class="form-control">
+  </div>
+</div>
+  </div>
+
+<br>
+<hr>
+<style>
+  .table {
+    border-collapse: collapse; /* Ensures borders are collapsed into a single border */
+    width: 100%; /* Makes the table take the full width of its container */
+    margin: 20px 0; /* Adds some margin above and below the table */
+    font-family: Arial, sans-serif; /* Sets a clean font for the table */
+  }
+  .table th, .table td {
+    border: 1px solid #ddd; /* Adds a light gray border to table cells */
+    padding: 12px; /* Adds padding for better spacing */
+    text-align: left; /* Aligns text to the left */
+  }
+  .table th {
+    background-color: #f2f2f2; /* Adds a background color to the header */
+    font-weight: bold; /* Makes header text bold */
+  }
+  .table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Adds a light background color to even rows */
+  }
+  .table img {
+    max-width: 100px; /* Sets a maximum width for images */
+    height: auto; /* Maintains aspect ratio */
+    border-radius: 5px; /* Optional: Adds rounded corners to images */
+  }
+  .table td {
+    vertical-align: middle; /* Vertically centers content in table cells */
+  }
+</style>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Recipe Name</th>
+      <th scope="col">Recipe Description</th>
+      <th scope="col">Image</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for recipe in recipes %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th> <!-- Use forloop.counter for dynamic row numbering -->
+      <td>{{ recipe.recipe_name }}</td> <!-- Use double curly braces for variable interpolation -->
+      <td>{{ recipe.recipe_description }}</td>
+      <td>
+        <img src="/media/{{ recipe.recipe_image }}" alt="{{ recipe1.recipe_name }}"> <!-- Display image with a fixed width -->
+      </td>
+      <td>
+        <a href="/delete_recipe/{{recipe.id}}/" class="btn btn-danger m-2">Delete</a>
+        <br>
+        <br>
+        <br>
+        <br>
+        <a href="/update_recipe/{{recipe.id}}/" class="btn btn-success">update</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</body>
+</html>
