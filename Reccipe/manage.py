@@ -3,20 +3,22 @@
 import os
 import sys
 
-
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Reccipe.settings')
 
-    # Port Binding for Render or Dynamic Environment
+    # Get the port from the environment or default to 8000
     port = os.environ.get("PORT", "8000")
+
     try:
         from django.core.management import execute_from_command_line
-        # Add dynamic port binding if running via `runserver`
-        if sys.argv[1] == "runserver":
+        
+        # Check if the runserver command is being invoked
+        if len(sys.argv) > 1 and sys.argv[1] == "runserver":
+            # Add the correct host and port to the arguments dynamically
             sys.argv[2] = f"0.0.0.0:{port}"
     except (ImportError, IndexError):
-        pass  # IndexError if no command is provided, it continues as usual.
+        pass  # If there's no command, just continue as usual.
 
     try:
         execute_from_command_line(sys.argv)
@@ -26,7 +28,6 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-
 
 if __name__ == '__main__':
     main()
