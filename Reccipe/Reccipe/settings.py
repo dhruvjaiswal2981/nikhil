@@ -1,5 +1,5 @@
 from pathlib import Path
-import os
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-onb9x9!$w3opw(*s3xebnp&(t7#o!d_bq&pz(o#3+*gg+bfokd
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['nikhil-0e22.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,7 +48,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Reccipe.wsgi.application'
+WSGI_APPLICATION = 'Reccipe.wsgi.app'
 
 DATABASES = {
     'default': {
