@@ -48,7 +48,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Reccipe.wsgi.app'
+WSGI_APPLICATION = 'Reccipe.wsgi.application'
+
 
 DATABASES = {
     'default': {
